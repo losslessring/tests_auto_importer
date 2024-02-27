@@ -1,0 +1,24 @@
+{
+    "name": "tests_auto_importer",
+    "version": "1.0.0",
+    "description": "Tests auto importer",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "file-scan": "node --experimental-vm-modules ./fileScanner/fileScanner.js --watch",
+        "test": "node ./src/fileScanner/tests/runTests.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/losslessring/tests_auto_importer.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/losslessring/tests_auto_importer/issues"
+    },
+    "homepage": "https://github.com/losslessring/tests_auto_importer#readme",
+    "dependencies": {
+        "ramda": "^0.29.1"
+    }
+}
