@@ -5,7 +5,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "file-scan": "node --experimental-vm-modules ./fileScanner/fileScanner.js --watch",
+        "file-scan": "node ./src/fileScanner/fileScanner.js --watch",
         "test": "node ./src/fileScanner/tests/runTests.js"
     },
     "repository": {
@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/losslessring/tests_auto_importer#readme",
     "dependencies": {
+        "glob": "^10.3.10",
         "ramda": "^0.29.1"
     }
 }

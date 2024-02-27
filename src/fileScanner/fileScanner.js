@@ -1,23 +1,9 @@
-import { scanDirectory } from "./scanDirectory/scanDirectory.js"
+import { glob } from "glob"
 
-console.log(scanDirectory("./"))
+import { promises as fs } from "fs"
 
-// import * as fs from "fs"
-// const fs = require("fs")
+const testFiles = await glob("**/*.test.js", { ignore: "node_modules/**" })
 
-// export function scanDirectory(dir) {
-//     return fs.readdir(dir, (err, files) => {
-//         if (err) throw err
+const path = "./src/fileScanner/test_files.json"
 
-//         return files
-//     })
-// }
-// console.log(scanDirectory("./"))
-
-// const files = fs.readdir("./", (err, files) => {
-//     if (err) throw err
-
-//     return files
-// })
-
-// console.log("works")
+await fs.writeFile(path, JSON.stringify(testFiles))
