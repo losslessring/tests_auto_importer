@@ -1,9 +1,27 @@
-import { glob } from "glob"
+import { scanDirectoryTree } from "./scanDirectoryTree/scanDirectoryTree.js"
+import { fixPathsBackSlashes } from "./utils/fixPathsBackSlashes/fixPathsBackSlashes.js"
+import { writeFile } from "./writeFile/writeFile.js"
 
-import { promises as fs } from "fs"
+const testFilesPaths = await scanDirectoryTree({
+    pattern: "src/fileScanner/**/*.test.js",
+    options: { ignore: "node_modules/**" },
+})
 
-const testFiles = await glob("**/*.test.js", { ignore: "node_modules/**" })
+const pathsFixedBackSlashes = fixPathsBackSlashes(testFilesPaths)
 
-const path = "./src/fileScanner/test_files.json"
+const withAddedNewLineSymbol = [
+    "src/fileScanner/writeFile/writeFile.test.js",
+    "\n",
+    "src/fileScanner/scanDirectoryTree/scanDirectoryTree.test.js",
+    "\n",
+    "src/fileScanner/utils/fixPathsBackSlashes/fixPathsBackSlashes.test.js",
+    "\n",
+]
 
-await fs.writeFile(path, JSON.stringify(testFiles))
+console.log(pathsFixedBackSlashes)
+const path = "./src/fileScanner/test_files.js"
+
+await writeFile({
+    filePath: path,
+    content: withAddedNewLineSymbol,
+})

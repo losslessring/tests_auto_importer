@@ -1,5 +1,5 @@
-import * as fs from "fs"
+import { promises as fs } from "fs"
 
-export function writeFile({ filePath, content }) {
-    return fs.writeFileSync(filePath, JSON.stringify(content))
+export async function writeFile({ filePath, content }) {
+    return await fs.writeFile(filePath, content)
 }

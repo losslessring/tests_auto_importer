@@ -7,19 +7,19 @@ import { writeFile } from "./writeFile.js"
 
 export const writeFile_test = () => {
     describe("write file", () => {
-        it("write data to a file", () => {
+        it("write data to a file", async () => {
             const filePath =
-                "./src/fileScanner/tests/writeFile/writeFileTest.json"
+                "./src/fileScanner/writeFile/tests/writeFile/writeFileTest.json"
 
             const content = "test"
 
             const expected = "test"
 
-            writeFile({ filePath, content })
+            await writeFile({ filePath, content: JSON.stringify(content) })
 
             const result = JSON.parse(
                 fs.readFileSync(
-                    "./src/fileScanner/tests/writeFile/writeFileTest.json"
+                    "./src/fileScanner/writeFile/tests/writeFile/writeFileTest.json"
                 )
             )
 
