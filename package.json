@@ -5,8 +5,10 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "file-scan": "node ./src/fileScanner/fileScanner.js --watch",
-        "test": "node ./src/fileScanner/tests/runTests.js"
+        "tests-scan-import": "node ./testFilesScanAndImport.js",
+        "run-tests": "node ./runTests.js",
+        "import-run-tests": "node ./testFilesScanAndImport.js && node ./runTests.js",
+        "test": "nodemon --exec npm run import-run-tests -e js --watch src --ignore testsAutoImport.js"
     },
     "repository": {
         "type": "git",
@@ -20,6 +22,7 @@
     "homepage": "https://github.com/losslessring/tests_auto_importer#readme",
     "dependencies": {
         "glob": "^10.3.10",
+        "nodemon": "^3.1.0",
         "ramda": "^0.29.1"
     }
 }
