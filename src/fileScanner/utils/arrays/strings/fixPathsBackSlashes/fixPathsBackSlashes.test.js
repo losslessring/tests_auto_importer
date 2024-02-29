@@ -1,6 +1,6 @@
-import { describe } from "../../testingLibrary/testingLibrary.js"
-import { it } from "../../testingLibrary/testingLibrary.js"
-import { expect } from "../../testingLibrary/testingLibrary.js"
+import { describe } from "../../../../testingLibrary/testingLibrary.js"
+import { it } from "../../../../testingLibrary/testingLibrary.js"
+import { expect } from "../../../../testingLibrary/testingLibrary.js"
 
 import { fixPathsBackSlashes } from "./fixPathsBackSlashes.js"
 

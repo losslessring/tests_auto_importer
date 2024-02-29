@@ -1,4 +1,4 @@
-import { tests } from "./testsImport.js"
+import { tests } from "./testsAutoImport.js"
 
 function runAllAutomatedTests() {
     const testFunctions = Object.values(tests)
