@@ -9,7 +9,7 @@ export const writeFile_test = () => {
     describe("write file", () => {
         it("write data to a file", async () => {
             const filePath =
-                "./src/fileScanner/writeFile/tests/writeFile/writeFileTest.json"
+                "./src/testsAutoImporter/writeFile/tests/writeFile/writeFileTest.json"
 
             const content = "test"
 
@@ -19,7 +19,7 @@ export const writeFile_test = () => {
 
             const result = JSON.parse(
                 fs.readFileSync(
-                    "./src/fileScanner/writeFile/tests/writeFile/writeFileTest.json"
+                    "./src/testsAutoImporter/writeFile/tests/writeFile/writeFileTest.json"
                 )
             )
 
