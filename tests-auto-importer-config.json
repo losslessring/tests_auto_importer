@@ -1,0 +1,3 @@
+{
+    "testsDirectoryPattern": "src/testsAutoImporter/**/*.test.js"
+}

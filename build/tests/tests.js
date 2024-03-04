@@ -5172,8 +5172,8 @@ var PathScurryBase = class {
    *
    * @internal
    */
-  constructor(cwd = process.cwd(), pathImpl, sep2, { nocase, childrenCacheSize = 16 * 1024, fs: fs3 = defaultFS } = {}) {
-    this.#fs = fsFromOption(fs3);
+  constructor(cwd = process.cwd(), pathImpl, sep2, { nocase, childrenCacheSize = 16 * 1024, fs: fs4 = defaultFS } = {}) {
+    this.#fs = fsFromOption(fs4);
     if (cwd instanceof URL || cwd.startsWith("file://")) {
       cwd = fileURLToPath(cwd);
     }
@@ -5731,8 +5731,8 @@ var PathScurryWin32 = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs3) {
-    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs3 });
+  newRoot(fs4) {
+    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs4 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -5760,8 +5760,8 @@ var PathScurryPosix = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs3) {
-    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs3 });
+  newRoot(fs4) {
+    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs4 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -6838,6 +6838,42 @@ var scanDirectoryTree_test = () => {
   });
 };
 
+// src/testsAutoImporter/readFile/readFile.test.js
+var readFile_test_exports = {};
+__export(readFile_test_exports, {
+  readFile_test: () => readFile_test
+});
+
+// src/testsAutoImporter/readFile/readFile.js
+import { promises as fs3 } from "fs";
+async function readFile({ path: path2, encoding }) {
+  try {
+    const data = await fs3.readFile(path2, {
+      encoding
+    });
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// src/testsAutoImporter/readFile/readFile.test.js
+var readFile_test = () => {
+  describe("read file", () => {
+    it("read data from file", async () => {
+      const expected = {
+        key0: "value0",
+        key1: "value1"
+      };
+      const result = await readFile({
+        path: "./src/testsAutoImporter/readFile/tests/readFileTest.json",
+        encoding: "utf8"
+      }).then((data) => JSON.parse(data));
+      expect(result).toBe(expected);
+    });
+  });
+};
+
 // src/testsAutoImporter/utils/arrays/strings/createImportsFromPaths/createImportsFromPaths.test.js
 var createImportsFromPaths_test_exports = {};
 __export(createImportsFromPaths_test_exports, {
@@ -6990,7 +7026,7 @@ var createExportsFromArray_test = () => {
 };
 
 // testsAutoImport.js
-var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports };
+var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...readFile_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports };
 export {
   tests
 };

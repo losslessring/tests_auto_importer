@@ -1,11 +1,13 @@
-import { scanDirectoryTree } from "./src/testsAutoImporter/scanDirectoryTree/scanDirectoryTree.js"
-import { writeFile } from "./src/testsAutoImporter/writeFile/writeFile.js"
+import { scanDirectoryTree } from "../scanDirectoryTree/scanDirectoryTree.js"
+import { writeFile } from "../writeFile/writeFile.js"
 
-import { createImportsExportsFromPaths } from "./src/testsAutoImporter/utils/arrays/strings/createImportsExportsFromPaths/createImportsExportsFromPaths.js"
+import { createImportsExportsFromPaths } from "../utils/arrays/strings/createImportsExportsFromPaths/createImportsExportsFromPaths.js"
 
-async function scanDirectoryAndCreateImportFile() {
+export async function scanDirectoryAndCreateImportFile({
+    testsDirectoryPattern,
+}) {
     const testFilesPaths = await scanDirectoryTree({
-        pattern: "src/testsAutoImporter/**/*.test.js",
+        pattern: testsDirectoryPattern,
         options: {
             ignore: "node_modules/**",
             posix: true,
@@ -27,5 +29,3 @@ async function scanDirectoryAndCreateImportFile() {
         content: imports,
     })
 }
-
-scanDirectoryAndCreateImportFile()

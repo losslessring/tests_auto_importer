@@ -9,9 +9,9 @@
         "run-tests": "node ./runTests.js",
         "import-run-tests": "node ./testFilesScanAndImport.js && node ./runTests.js",
         "tests-esbuild": "esbuild ./testsAutoImport.js --bundle --charset=utf8 --platform=node --global-name=tests --format=esm --outfile=build/tests/tests.js",
-        "import-build-run-tests": "node ./testFilesScanAndImport.js && npm run tests-esbuild && node ./runTests.js",
+        "import-build-run-tests": "node ./testsAutoImporter.js && npm run tests-esbuild && node ./runTests.js",
         "test": "nodemon --exec npm run import-build-run-tests -e js --watch src --ignore testsAutoImport.js",
-        "tests-auto-importer-esbuild": "esbuild ./testFilesScanAndImport.js --bundle --charset=utf8 --platform=node --outfile=build/testsAutoImporter/testsAutoImporter.js"
+        "tests-auto-importer-esbuild": "esbuild ./testsAutoImporter.js --bundle --charset=utf8 --platform=node --outfile=build/testsAutoImporter/testsAutoImporter.js"
     },
     "repository": {
         "type": "git",
@@ -24,7 +24,6 @@
     },
     "homepage": "https://github.com/losslessring/tests_auto_importer#readme",
     "dependencies": {
-        "es": "^0.8.0",
         "esbuild": "^0.20.1",
         "glob": "^10.3.10",
         "nodemon": "^3.1.0",
