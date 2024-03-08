@@ -240,12 +240,12 @@ var require_brace_expansion = __commonJS({
   }
 });
 
-// testsAutoImporter.js
-var testsAutoImporter_exports = {};
-__export(testsAutoImporter_exports, {
+// testsAutoImporter_dev.js
+var testsAutoImporter_dev_exports = {};
+__export(testsAutoImporter_dev_exports, {
   testsAutoImporter: () => testsAutoImporter
 });
-module.exports = __toCommonJS(testsAutoImporter_exports);
+module.exports = __toCommonJS(testsAutoImporter_dev_exports);
 
 // src/testsAutoImporter/readFile/readFile.js
 var import_fs = require("fs");
@@ -6557,7 +6557,7 @@ async function scanDirectoryAndCreateImportFile({
   });
 }
 
-// testsAutoImporter.js
+// testsAutoImporter_dev.js
 async function testsAutoImporter({ configFilePath }) {
   const options = await readFile({
     path: configFilePath,
