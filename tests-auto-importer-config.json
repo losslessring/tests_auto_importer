@@ -1,3 +1,12 @@
 {
-    "testsDirectoryPattern": "src/testsAutoImporter/**/*.test.js"
+    "testsDirectoryPattern": "src/testsAutoImporter/**/*.test.js",
+    "globOptions": {
+        "ignore": "node_modules/**",
+        "posix": "true",
+        "dotRelative": "true"
+    },
+    "importTestAs": "test_",
+    "exportAllTestsAs": "tests",
+    "exportJoinSymbols": ",",
+    "exportFilePath": "./testsAutoImport.js"
 }

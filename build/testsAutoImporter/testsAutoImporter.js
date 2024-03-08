@@ -7,6 +7,10 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -23,6 +27,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/balanced-match/index.js
 var require_balanced_match = __commonJS({
@@ -234,6 +239,26 @@ var require_brace_expansion = __commonJS({
     }
   }
 });
+
+// testsAutoImporter.js
+var testsAutoImporter_exports = {};
+__export(testsAutoImporter_exports, {
+  testsAutoImporter: () => testsAutoImporter
+});
+module.exports = __toCommonJS(testsAutoImporter_exports);
+
+// src/testsAutoImporter/readFile/readFile.js
+var import_fs = require("fs");
+async function readFile({ path: path2, encoding }) {
+  try {
+    const data = await import_fs.promises.readFile(path2, {
+      encoding
+    });
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // node_modules/minimatch/dist/mjs/index.js
 var import_brace_expansion = __toESM(require_brace_expansion(), 1);
@@ -2839,7 +2864,7 @@ var LRUCache = class _LRUCache {
 var import_path = require("path");
 var import_url = require("url");
 var actualFS = __toESM(require("fs"), 1);
-var import_fs = require("fs");
+var import_fs2 = require("fs");
 var import_promises = require("fs/promises");
 
 // node_modules/minipass/dist/esm/index.js
@@ -3721,12 +3746,12 @@ var Minipass = class extends import_events.EventEmitter {
 };
 
 // node_modules/path-scurry/dist/mjs/index.js
-var realpathSync = import_fs.realpathSync.native;
+var realpathSync = import_fs2.realpathSync.native;
 var defaultFS = {
-  lstatSync: import_fs.lstatSync,
-  readdir: import_fs.readdir,
-  readdirSync: import_fs.readdirSync,
-  readlinkSync: import_fs.readlinkSync,
+  lstatSync: import_fs2.lstatSync,
+  readdir: import_fs2.readdir,
+  readdirSync: import_fs2.readdirSync,
+  readlinkSync: import_fs2.readlinkSync,
   realpathSync,
   promises: {
     lstat: import_promises.lstat,
@@ -4818,8 +4843,8 @@ var PathScurryBase = class {
    *
    * @internal
    */
-  constructor(cwd = process.cwd(), pathImpl, sep2, { nocase, childrenCacheSize = 16 * 1024, fs: fs2 = defaultFS } = {}) {
-    this.#fs = fsFromOption(fs2);
+  constructor(cwd = process.cwd(), pathImpl, sep2, { nocase, childrenCacheSize = 16 * 1024, fs: fs3 = defaultFS } = {}) {
+    this.#fs = fsFromOption(fs3);
     if (cwd instanceof URL || cwd.startsWith("file://")) {
       cwd = (0, import_url.fileURLToPath)(cwd);
     }
@@ -5377,8 +5402,8 @@ var PathScurryWin32 = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs2) {
-    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs2 });
+  newRoot(fs3) {
+    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs3 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -5406,8 +5431,8 @@ var PathScurryPosix = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs2) {
-    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs2 });
+  newRoot(fs3) {
+    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs3 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -6456,9 +6481,9 @@ async function scanDirectoryTree({ pattern, options = {} }) {
 }
 
 // src/testsAutoImporter/writeFile/writeFile.js
-var import_fs2 = require("fs");
+var import_fs3 = require("fs");
 async function writeFile({ filePath, content }) {
-  return await import_fs2.promises.writeFile(filePath, content);
+  return await import_fs3.promises.writeFile(filePath, content);
 }
 
 // src/testsAutoImporter/utils/arrays/strings/createExportsFromArray/createExportsFromArray.js
@@ -6507,26 +6532,56 @@ function createImportsExportsFromPaths({
   return importsExports;
 }
 
-// testFilesScanAndImport.js
-async function scanDirectoryAndCreateImportFile() {
+// src/testsAutoImporter/scanDirectoryAndCreateImportFile/scanDirectoryAndCreateImportFile.js
+async function scanDirectoryAndCreateImportFile({
+  testsDirectoryPattern,
+  globOptions,
+  importTestAs,
+  exportAllTestsAs,
+  exportJoinSymbols,
+  exportFilePath
+}) {
   const testFilesPaths = await scanDirectoryTree({
-    pattern: "src/testsAutoImporter/**/*.test.js",
-    options: {
-      ignore: "node_modules/**",
-      posix: true,
-      dotRelative: true
-    }
+    pattern: testsDirectoryPattern,
+    options: globOptions
   });
   const imports = createImportsExportsFromPaths({
     filePaths: testFilesPaths,
-    importName: "test_",
-    exportName: "tests",
-    exportJoinSymbols: ","
+    importName: importTestAs,
+    exportName: exportAllTestsAs,
+    exportJoinSymbols
   });
-  const path2 = "./testsAutoImport.js";
   await writeFile({
-    filePath: path2,
+    filePath: exportFilePath,
     content: imports
   });
 }
-scanDirectoryAndCreateImportFile();
+
+// testsAutoImporter.js
+async function testsAutoImporter({ configFilePath }) {
+  const options = await readFile({
+    path: configFilePath,
+    encoding: "utf8"
+  }).then((data) => JSON.parse(data));
+  const {
+    testsDirectoryPattern,
+    globOptions,
+    importTestAs,
+    exportAllTestsAs,
+    exportJoinSymbols,
+    exportFilePath
+  } = options;
+  scanDirectoryAndCreateImportFile({
+    testsDirectoryPattern,
+    globOptions,
+    importTestAs,
+    exportAllTestsAs,
+    exportJoinSymbols,
+    exportFilePath
+  });
+}
+testsAutoImporter({ configFilePath: "./tests-auto-importer-config.json" });
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  testsAutoImporter
+});

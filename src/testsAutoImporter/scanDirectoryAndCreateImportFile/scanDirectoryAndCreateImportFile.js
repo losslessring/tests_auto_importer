@@ -5,27 +5,26 @@ import { createImportsExportsFromPaths } from "../utils/arrays/strings/createImp
 
 export async function scanDirectoryAndCreateImportFile({
     testsDirectoryPattern,
+    globOptions,
+    importTestAs,
+    exportAllTestsAs,
+    exportJoinSymbols,
+    exportFilePath,
 }) {
     const testFilesPaths = await scanDirectoryTree({
         pattern: testsDirectoryPattern,
-        options: {
-            ignore: "node_modules/**",
-            posix: true,
-            dotRelative: true,
-        },
+        options: globOptions,
     })
 
     const imports = createImportsExportsFromPaths({
         filePaths: testFilesPaths,
-        importName: "test_",
-        exportName: "tests",
-        exportJoinSymbols: ",",
+        importName: importTestAs,
+        exportName: exportAllTestsAs,
+        exportJoinSymbols: exportJoinSymbols,
     })
 
-    const path = "./testsAutoImport.js"
-
     await writeFile({
-        filePath: path,
+        filePath: exportFilePath,
         content: imports,
     })
 }
