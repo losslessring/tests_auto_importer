@@ -6874,6 +6874,44 @@ var readFile_test = () => {
   });
 };
 
+// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.test.js
+var beautifyTestsLog_test_exports = {};
+__export(beautifyTestsLog_test_exports, {
+  beautifyTestsLog_test: () => beautifyTestsLog_test
+});
+
+// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.js
+function beautifyTestsLog({ log, splitBy }) {
+  return log.split(splitBy);
+}
+
+// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.test.js
+var beautifyTestsLog_test = () => {
+  describe("beautify tests log", () => {
+    it("beautify tests log", () => {
+      const input = `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id
+Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded
+Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""
+`;
+      const expected = [
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded`,
+        `Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""`,
+        ""
+      ];
+      const result = beautifyTestsLog({
+        log: input,
+        splitBy: "\n"
+      });
+      expect(result).toBe(expected);
+    });
+  });
+};
+
 // src/testsAutoImporter/utils/arrays/strings/createImportsFromPaths/createImportsFromPaths.test.js
 var createImportsFromPaths_test_exports = {};
 __export(createImportsFromPaths_test_exports, {
@@ -7026,7 +7064,7 @@ var createExportsFromArray_test = () => {
 };
 
 // testsAutoImport.js
-var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...readFile_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports };
+var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...readFile_test_exports, ...beautifyTestsLog_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports };
 export {
   tests
 };
