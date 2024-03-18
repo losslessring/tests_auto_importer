@@ -7,11 +7,11 @@ class TestMatchers {
 
     toBe(expected) {
         if (R.equals(expected, this.actual)) {
-            console.log("\x1b[32mSucceeded")
+            console.log("\x1b[32mSucceeded\x1b[0m")
         } else {
             throw new Error(
                 `\x1b[31mTest failed\nActual:\n${JSON.stringify(this.actual)}
-                \nExpected:\n${JSON.stringify(expected)}\n`
+                \nExpected:\n${JSON.stringify(expected)}\n\x1b[90m`
             )
         }
     }
@@ -36,7 +36,7 @@ export function expect(actual) {
 
 export function describe(suiteName, fn) {
     try {
-        console.log(`\x1b[37msuite: ${suiteName}`)
+        console.log(`suite: ${suiteName}`)
         fn()
     } catch (err) {
         console.log(err.message)
@@ -44,11 +44,11 @@ export function describe(suiteName, fn) {
 }
 
 export function it(testName, fn) {
-    console.log(`\x1b[37mtest: ${testName}`)
+    console.log(`test: ${testName}`)
     try {
         fn()
     } catch (err) {
         console.log(err)
-        throw new Error("\x1b[31mtest run failed")
+        throw new Error("\x1b[31mtest run failed\x1b[0m")
     }
 }

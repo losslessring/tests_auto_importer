@@ -513,7 +513,7 @@ var TestMatchers = class {
   }
   toBe(expected) {
     if (equals_default(expected, this.actual)) {
-      console.log("\x1B[32mSucceeded");
+      console.log("\x1B[32mSucceeded\x1B[0m");
     } else {
       throw new Error(
         `\x1B[31mTest failed
@@ -522,7 +522,7 @@ ${JSON.stringify(this.actual)}
                 
 Expected:
 ${JSON.stringify(expected)}
-`
+\x1B[90m`
       );
     }
   }
@@ -544,19 +544,19 @@ function expect(actual) {
 }
 function describe(suiteName, fn) {
   try {
-    console.log(`\x1B[37msuite: ${suiteName}`);
+    console.log(`suite: ${suiteName}`);
     fn();
   } catch (err) {
     console.log(err.message);
   }
 }
 function it(testName, fn) {
-  console.log(`\x1B[37mtest: ${testName}`);
+  console.log(`test: ${testName}`);
   try {
     fn();
   } catch (err) {
     console.log(err);
-    throw new Error("\x1B[31mtest run failed");
+    throw new Error("\x1B[31mtest run failed\x1B[0m");
   }
 }
 
