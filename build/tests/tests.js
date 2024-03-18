@@ -513,12 +513,16 @@ var TestMatchers = class {
   }
   toBe(expected) {
     if (equals_default(expected, this.actual)) {
-      console.log(`Succeeded`);
+      console.log("\x1B[32mSucceeded");
     } else {
       throw new Error(
-        `Fail - Actual: ${JSON.stringify(
-          this.actual
-        )}, Expected: ${JSON.stringify(expected)}`
+        `\x1B[31mTest failed
+Actual:
+${JSON.stringify(this.actual)}
+                
+Expected:
+${JSON.stringify(expected)}
+`
       );
     }
   }
@@ -540,19 +544,19 @@ function expect(actual) {
 }
 function describe(suiteName, fn) {
   try {
-    console.log(`suite: ${suiteName}`);
+    console.log(`\x1B[37msuite: ${suiteName}`);
     fn();
   } catch (err) {
     console.log(err.message);
   }
 }
 function it(testName, fn) {
-  console.log(`test: ${testName}`);
+  console.log(`\x1B[37mtest: ${testName}`);
   try {
     fn();
   } catch (err) {
     console.log(err);
-    throw new Error("test run failed");
+    throw new Error("\x1B[31mtest run failed");
   }
 }
 
@@ -6874,44 +6878,6 @@ var readFile_test = () => {
   });
 };
 
-// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.test.js
-var beautifyTestsLog_test_exports = {};
-__export(beautifyTestsLog_test_exports, {
-  beautifyTestsLog_test: () => beautifyTestsLog_test
-});
-
-// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.js
-function beautifyTestsLog({ log, splitBy }) {
-  return log.split(splitBy);
-}
-
-// src/testsAutoImporter/testingLibrary/beautifyTestsLog/beautifyTestsLog.test.js
-var beautifyTestsLog_test = () => {
-  describe("beautify tests log", () => {
-    it("beautify tests log", () => {
-      const input = `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id
-Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet
-Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded
-Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet
-Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""
-`;
-      const expected = [
-        `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id`,
-        `Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet`,
-        `Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded`,
-        `Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet`,
-        `Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""`,
-        ""
-      ];
-      const result = beautifyTestsLog({
-        log: input,
-        splitBy: "\n"
-      });
-      expect(result).toBe(expected);
-    });
-  });
-};
-
 // src/testsAutoImporter/utils/arrays/strings/createImportsFromPaths/createImportsFromPaths.test.js
 var createImportsFromPaths_test_exports = {};
 __export(createImportsFromPaths_test_exports, {
@@ -7063,8 +7029,131 @@ var createExportsFromArray_test = () => {
   });
 };
 
+// src/testsAutoImporter/testingLibrary/utils/string/splitBySubstring/splitBySubstring.test.js
+var splitBySubstring_test_exports = {};
+__export(splitBySubstring_test_exports, {
+  splitBySubstring_test: () => splitBySubstring_test
+});
+
+// src/testsAutoImporter/testingLibrary/utils/string/splitBySubstring/splitBySubstring.js
+function splitBySubstring({ string, splitBy }) {
+  return string.split(splitBy);
+}
+
+// src/testsAutoImporter/testingLibrary/utils/string/splitBySubstring/splitBySubstring.test.js
+var splitBySubstring_test = () => {
+  describe("split by substring", () => {
+    it("split by substring", () => {
+      const input = `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id
+Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded
+Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""
+`;
+      const expected = [
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded`,
+        `Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""`,
+        ""
+      ];
+      const result = splitBySubstring({
+        string: input,
+        splitBy: "\n"
+      });
+      expect(result).toBe(expected);
+    });
+  });
+};
+
+// src/testsAutoImporter/testingLibrary/utils/string/removeTimeInfo/removeTimeInfo.test.js
+var removeTimeInfo_test_exports = {};
+__export(removeTimeInfo_test_exports, {
+  removeTimeInfo_test: () => removeTimeInfo_test
+});
+
+// src/testsAutoImporter/testingLibrary/utils/string/removeTimeInfo/removeTimeInfo.js
+function removeTimeInfo({ log, cutBeforeInclusive }) {
+  return log.map((str) => str.split(cutBeforeInclusive)).map((arrayOfStrings) => {
+    return arrayOfStrings.length === 2 ? arrayOfStrings[1] : arrayOfStrings[0];
+  });
+}
+
+// src/testsAutoImporter/testingLibrary/utils/string/removeTimeInfo/removeTimeInfo.test.js
+var removeTimeInfo_test = () => {
+  describe("remove time info", () => {
+    it("remove time info", () => {
+      const input = [
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded`,
+        `Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet`,
+        `Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""`,
+        "",
+        "aaa"
+      ];
+      const expected = [
+        `suite: open spreadsheet by id`,
+        `test: returns the name of the spreadsheet`,
+        `Succeeded`,
+        `test: returns the name of the spreadsheet`,
+        `Error: Fail - Actual: "Copy of Счета", Expected: ""`,
+        "",
+        "aaa"
+      ];
+      const result = removeTimeInfo({
+        log: input,
+        cutBeforeInclusive: "INFO: "
+      });
+      expect(result).toBe(expected);
+    });
+  });
+};
+
+// src/testsAutoImporter/testingLibrary/utils/string/beautifyTestsLog/beautifyTestsLog.test.js
+var beautifyTestsLog_test_exports = {};
+__export(beautifyTestsLog_test_exports, {
+  beautifyTestsLog_test: () => beautifyTestsLog_test
+});
+
+// src/testsAutoImporter/testingLibrary/utils/string/beautifyTestsLog/beautifyTestsLog.js
+function beautifyTestsLog({ log, splitBy }) {
+  return removeTimeInfo({
+    log: splitBySubstring({ string: log, splitBy }),
+    cutBeforeInclusive: "INFO: "
+  });
+}
+
+// src/testsAutoImporter/testingLibrary/utils/string/beautifyTestsLog/beautifyTestsLog.test.js
+var beautifyTestsLog_test = () => {
+  describe("beautify tests log", () => {
+    it("beautify tests log", () => {
+      const input = `Wed Mar 13 15:14:00 MSK 2024 INFO: suite: open spreadsheet by id
+Wed Mar 13 15:14:00 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:14:00 MSK 2024 INFO: Succeeded
+Wed Mar 13 15:47:16 MSK 2024 INFO: test: returns the name of the spreadsheet
+Wed Mar 13 15:45:02 MSK 2024 INFO: Error: Fail - Actual: "Copy of Счета", Expected: ""
+`;
+      const expected = [
+        `suite: open spreadsheet by id`,
+        `test: returns the name of the spreadsheet`,
+        `Succeeded`,
+        `test: returns the name of the spreadsheet`,
+        `Error: Fail - Actual: "Copy of Счета", Expected: ""`,
+        ""
+      ];
+      const result = beautifyTestsLog({
+        log: input,
+        splitBy: "\n"
+      });
+      expect(result).toBe(expected);
+    });
+  });
+};
+
 // testsAutoImport.js
-var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...readFile_test_exports, ...beautifyTestsLog_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports };
+var tests = { ...writeFile_test_exports, ...scanDirectoryTree_test_exports, ...readFile_test_exports, ...createImportsFromPaths_test_exports, ...createImportsExportsFromPaths_test_exports, ...createImportNamesFromArrayIndexes_test_exports, ...createExportsFromArray_test_exports, ...splitBySubstring_test_exports, ...removeTimeInfo_test_exports, ...beautifyTestsLog_test_exports };
 export {
   tests
 };
