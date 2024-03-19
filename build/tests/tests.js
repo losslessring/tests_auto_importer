@@ -507,30 +507,45 @@ var equals = /* @__PURE__ */ _curry2(function equals2(a, b) {
 var equals_default = equals;
 
 // src/testsAutoImporter/testingLibrary/testingLibrary.js
+var logColors = {
+  Reset: "\x1B[0m",
+  FgRed: "\x1B[31m",
+  FgGreen: "\x1B[32m",
+  FgWhite: "\x1B[37m",
+  FgGray: "\x1B[90m"
+};
+var loggerFn = console.log;
 var TestMatchers = class {
-  constructor(actual) {
+  constructor({ actual, logColors: logColors2, logFn = console.log }) {
     this.actual = actual;
+    this.logFn = logFn;
+    this.logColors = logColors2;
   }
   toBe(expected) {
     if (equals_default(expected, this.actual)) {
-      console.log("\x1B[32mSucceeded\x1B[0m");
+      this.logFn(
+        `${this.logColors.FgGreen}Succeeded${this.logColors.Reset}`
+      );
     } else {
-      throw new Error(
-        `\x1B[31mTest failed
+      this.logFn(
+        `${this.logColors.FgRed}Test failed
 Actual:
-${JSON.stringify(this.actual)}
+${JSON.stringify(
+          this.actual
+        )}
                 
 Expected:
 ${JSON.stringify(expected)}
-\x1B[90m`
+${this.logColors.Reset}`
       );
+      throw new Error();
     }
   }
   toBeTruthy() {
     if (this.actual) {
-      console.log(`Succeeded`);
+      this.logFn(`Succeeded`);
     } else {
-      console.log(
+      this.logFn(
         `Fail - Expected value to be truthy but got ${this.actual}`
       );
       throw new Error(
@@ -540,23 +555,25 @@ ${JSON.stringify(expected)}
   }
 };
 function expect(actual) {
-  return new TestMatchers(actual);
+  return new TestMatchers({ actual, logColors, logFn: loggerFn });
 }
-function describe(suiteName, fn) {
+function describe(suiteName, fn, logFn = loggerFn) {
   try {
-    console.log(`suite: ${suiteName}`);
+    logFn(`suite: ${suiteName}`);
     fn();
   } catch (err) {
-    console.log(err.message);
+    logFn(`${logColors.FgRed}${err.message}${logColors.Reset}`);
   }
 }
-function it(testName, fn) {
-  console.log(`test: ${testName}`);
+function it(testName, fn, logFn = loggerFn) {
+  logFn(`test: ${testName}`);
   try {
     fn();
   } catch (err) {
-    console.log(err);
-    throw new Error("\x1B[31mtest run failed\x1B[0m");
+    logFn(`${logColors.FgGray}`);
+    logFn(err);
+    logFn(`${logColors.Reset}`);
+    throw new Error("Test run failed");
   }
 }
 
